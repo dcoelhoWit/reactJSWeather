@@ -2,19 +2,9 @@ import "../styles.css";
 
 import React from "react";
 import WeatherPreviewCard from "./WeatherCard";
+import { formatEpochToUTCTime } from "../utils/DateUtils.js";
 
 export default function DailyWeather({day, forecasts}) {
-
-    function formatEpochToUTCTime(epochTimestamp) {
-        const date = new Date(epochTimestamp * 1000); 
-        const options = {
-            hour: '2-digit',
-            minute: '2-digit',
-            timeZone: 'UTC' 
-        };
-        return date.toLocaleString('en-GB', options).replace(',', ''); 
-    }
-
     return (
         <div>
             <h1>{day}</h1>
