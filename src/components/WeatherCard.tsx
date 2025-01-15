@@ -3,7 +3,7 @@ import "../styles.css";
 
 interface WeatherCardProps {
   time: string;
-  weather: Array<{ id: number; main: string }>;
+  weather: Weather[];
   maxTemp: number;
   minTemp: number;
 }

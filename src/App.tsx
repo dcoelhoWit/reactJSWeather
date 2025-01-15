@@ -7,28 +7,6 @@ import WeatherForecast from "./components/WeatherForecast";
 import WeatherToday from "./components/WeatherToday";
 import { formatEpochToUTCDate } from "./utils/DateUtils"; 
 
-interface ForecastEntry {
-  dt: number;
-  dt_txt: string;
-  weather: any;
-  main: {
-    temp_max: number;
-    temp_min: number;
-    temp: number;
-    feels_like: number;
-  };
-}
-
-interface City {
-  name: string;
-  [key: string]: any;
-}
-
-interface ResponseJson {
-  city: City;
-  list: ForecastEntry[];
-}
-
 function App() {
   const [activeLink, setActiveLink] = useState<string>("/");
 
@@ -75,8 +53,6 @@ function App() {
 
     // Update forecasts
     const list = responseJson.list;
-    console.log("WEATHER: " + list[0].weather)
-    console.log("CITY: " + responseJson.city)
     setForecasts(list);
 
     groupForecastByDays(forecasts);

@@ -4,18 +4,6 @@ import React from "react";
 import WeatherCard from "./WeatherCard";
 import { formatEpochToUTCTime } from "../utils/DateUtils";
 
-interface ForecastEntry {
-  dt: number;
-  dt_txt: string;
-  weather: any;
-  main: {
-    temp_max: number;
-    temp_min: number;
-    temp: number;
-    feels_like: number;
-  };
-}
-
 interface DailyWeatherProps {
   day: string;
   forecasts: ForecastEntry[];

@@ -3,7 +3,7 @@ import "../styles.css";
 import WeatherChart from "./WeatherChart";
 
 interface WeatherTodayProps {
-  groupedForecasts: { [key: string]: any[] } | undefined;
+  groupedForecasts: {[key: string]: ForecastEntry[];}
 }
 
 export default function WeatherToday({ groupedForecasts }: WeatherTodayProps) {
