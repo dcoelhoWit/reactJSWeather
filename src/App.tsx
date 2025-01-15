@@ -1,24 +1,79 @@
 import "./App.css";
-import "./styles.css";
-
+import styled from "styled-components";
 import React, { useState, useEffect, ChangeEvent } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  NavLink,
+} from "react-router-dom";
 import WeatherForecast from "./components/WeatherForecast";
 import WeatherToday from "./components/WeatherToday";
-import { formatEpochToUTCDate } from "./utils/DateUtils"; 
+import { formatEpochToUTCDate } from "./utils/DateUtils";
+
+const AppContainer = styled.div`
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  color: #fff;
+`;
+const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+`;
+const Title = styled.h2`
+  text-align: center;
+  margin: 25px 0;
+`;
+const SearchInput = styled.input`
+  padding: 15px;
+  margin: 25px 10px;
+  width: 100%;
+  font-size: 16px;
+  border-radius: 100px;
+  border: 1px solid #ccc;
+`;
+const Nav = styled.nav`
+  margin-top: 50px;
+  margin-bottom: 25px;
+`;
+const NavList = styled.ul`
+  list-style-type: none;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+`;
+const NavItem = styled.li`
+  padding: 10px;
+`;
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 1px solid white;
+  border-radius: 50px;
+  background-color: #181a1b;
+  color: white;
+  &.active {
+    background-color: white;
+    color: #181a1b;
+  }
+`;
 
 function App() {
-  const [activeLink, setActiveLink] = useState<string>("/");
-
   const [searchValue, setSearchValue] = useState<string>("");
 
   const [appTitle, setAppTitle] = useState<string>("");
   const [forecasts, setForecasts] = useState<ForecastEntry[]>([]);
-  const [groupedForecasts, setGroupedForecasts] = useState<{[key: string]: ForecastEntry[];}>({});
-  const [groupedForecastsIndices, setGroupedForecastsIndices] = useState<string[]>([]);
+  const [groupedForecasts, setGroupedForecasts] = useState<{
+    [key: string]: ForecastEntry[];
+  }>({});
+  const [groupedForecastsIndices, setGroupedForecastsIndices] = useState<
+    string[]
+  >([]);
 
   const apiKey = "b9072fabfcea0a52eeabff31f050bffd";
   const unit = "metric";
+  const defaultTitle = "Please search for a city";
 
   useEffect(() => {
     fetch(
@@ -38,17 +93,17 @@ function App() {
           "There was a problem with the weather fetch operation: ",
           error
         );
-        setAppTitle("Please Search For A City");
+        setAppTitle(defaultTitle);
       });
   });
 
-  function updateForecast(responseJson: ResponseJson) {
+  const updateForecast = (responseJson: ResponseJson) => {
     // Update Title
     const city = responseJson.city;
     if (city !== undefined) {
       setAppTitle("Weather in: " + city.name);
     } else {
-      setAppTitle("Please Search For A City");
+      setAppTitle(defaultTitle);
     }
 
     // Update forecasts
@@ -56,9 +111,9 @@ function App() {
     setForecasts(list);
 
     groupForecastByDays(forecasts);
-  }
+  };
 
-  function groupForecastByDays(forecasts: ForecastEntry[]) {
+  const groupForecastByDays = (forecasts: ForecastEntry[]) => {
     const days: { [key: string]: ForecastEntry[] } = {};
     if (forecasts !== undefined) {
       forecasts.forEach((entry) => {
@@ -72,10 +127,6 @@ function App() {
 
     setGroupedForecastsIndices(Object.keys(days));
     setGroupedForecasts(days);
-  }
-
-  const handleClick = (path: string) => {
-    setActiveLink(path);
   };
 
   const handleSearchValueUpdate = (e: ChangeEvent<HTMLInputElement>) => {
@@ -83,47 +134,36 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <div className="container">
-        <br></br>
-        <h2>{appTitle}</h2>
-        <input
+    <AppContainer>
+      <Container>
+        <Title>{appTitle}</Title>
+        <SearchInput
           type="text"
-          className="search-input"
           placeholder="Search city..."
           value={searchValue}
           onChange={handleSearchValueUpdate}
         />
         <Router>
-          <nav>
-            <ul>
-              <li>
-                <Link
+          <Nav>
+            <NavList>
+              <NavItem>
+                <StyledNavLink
                   to="/"
-                  onClick={() => handleClick("/")}
-                  style={{
-                    backgroundColor: activeLink === "/" ? "#ffffff" : "#000000",
-                    color: activeLink === "/" ? "#000000" : "#ffffff",
-                  }}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
                   Today's Chart
-                </Link>
-              </li>
-              <li>
-                <Link
+                </StyledNavLink>
+              </NavItem>
+              <NavItem>
+                <StyledNavLink
                   to="/forecast"
-                  onClick={() => handleClick("/forecast")}
-                  style={{
-                    backgroundColor:
-                      activeLink === "/forecast" ? "#ffffff" : "#000000",
-                    color: activeLink === "/forecast" ? "#000000" : "#ffffff",
-                  }}
+                  className={({ isActive }) => (isActive ? "active" : "")}
                 >
                   Weather Forecast
-                </Link>
-              </li>
-            </ul>
-          </nav>
+                </StyledNavLink>
+              </NavItem>
+            </NavList>
+          </Nav>
           <Routes>
             <Route
               path="/"
@@ -144,8 +184,8 @@ function App() {
             ></Route>
           </Routes>
         </Router>
-      </div>
-    </div>
+      </Container>
+    </AppContainer>
   );
 }
 

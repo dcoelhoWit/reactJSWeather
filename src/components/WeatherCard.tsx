@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles.css";
+import styled from "styled-components"
 
 interface WeatherCardProps {
   time: string;
@@ -7,6 +7,35 @@ interface WeatherCardProps {
   maxTemp: number;
   minTemp: number;
 }
+
+const Card = styled.div`
+  border-radius: 8px;
+  padding: 16px 0;
+  margin: 16px 0;
+  background: #272727;
+  overflow: hidden;
+`;
+const CardImg = styled.img`
+  width: 70px;
+  height: 70px;
+  object-position: center;
+`;
+const CardInfo = styled.div`
+  margin-top: 8px;
+`;
+const CardTitle = styled.h3`
+  margin: 0;
+`;
+const CardTempMax = styled.p`
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: rgb(255, 120, 120);
+`;
+const CardTempMin = styled.p`
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: rgb(131, 131, 255);
+`;
 
 export default function WeatherCard({
   time,
@@ -42,23 +71,22 @@ export default function WeatherCard({
   }
 
   return (
-    <div key={weather[0].id} className="card">
+    <Card key={weather[0].id}>
       {weather.map((entry) => (
-        <img
-          className="card-img"
+        <CardImg
+          key={entry.id}
           src={imageForWeather(entry.main)}
           alt={entry.main}
           onError={handleError}
         />
       ))}
-
-      <div className="card-info">
-        <h3 className="card-title">{time}</h3>
+      <CardInfo>
+        <CardTitle>{time}</CardTitle>{" "}
         <div>
-          <p className="card-temp-max">{minTemp}ºC</p>
-          <p className="card-temp-min">{maxTemp}ºC</p>
+          <CardTempMax>{maxTemp}ºC</CardTempMax>{" "}
+          <CardTempMin>{minTemp}ºC</CardTempMin>{" "}
         </div>
-      </div>
-    </div>
+      </CardInfo>
+    </Card>
   );
 }

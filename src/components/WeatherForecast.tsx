@@ -1,6 +1,5 @@
+import styled from "styled-components";
 import React from "react";
-import "../styles.css";
-
 import DailyWeather from "./DailyWeather";
 
 interface ForecastEntry {
@@ -20,15 +19,19 @@ interface WeatherForecastProps {
   groupedForecasts: {[key: string]: ForecastEntry[];};
 }
 
+const Container = styled.div`
+  text-align: center;
+`;
+
 export default function WeatherForecastWeatherForecast({
   groupedForecastsIndices,
   groupedForecasts,
 }: WeatherForecastProps) {
   return (
-    <div>
+    <Container>
       {groupedForecastsIndices.map((item) => (
         <DailyWeather key={item} day={item} forecasts={groupedForecasts[item]}></DailyWeather>
       ))}
-    </div>
+    </Container>
   );
 }

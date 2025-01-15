@@ -6,14 +6,15 @@ import {
   CategoryScale,
   LinearScale,
   PointElement,
+  Filler,
 } from "chart.js";
 
 import { formatEpochToUTCTime } from "../utils/DateUtils";
 
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Filler);
 
 interface WeatherChartProps {
-  todaysForecast?: { dt: number; main: { temp: number } }[];
+  todaysForecast?: ForecastEntry[];
 }
 
 const WeatherChart: React.FC<WeatherChartProps> = ({ todaysForecast }) => {
@@ -32,10 +33,10 @@ const WeatherChart: React.FC<WeatherChartProps> = ({ todaysForecast }) => {
     labels: labelsInput,
     datasets: [
       {
-        label: "Sample Data",
+        label: "",
         data: chartInput,
-        borderColor: "rgba(75,192,192,1)",
-        backgroundColor: "rgba(75,192,192,0.2)",
+        borderColor: "#f49d0f",
+        backgroundColor: "rgb(24, 26, 27)",
         fill: true,
       },
     ],
